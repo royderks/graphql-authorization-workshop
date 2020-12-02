@@ -6,6 +6,7 @@ export default gql`
     title: String!
     body: String!
     author: User
+    published: Boolean! # unpublished posts are only visible to editors and admins
   }
 
   type User {
