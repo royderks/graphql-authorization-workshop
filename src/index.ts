@@ -7,6 +7,13 @@ import resolvers from './resolvers';
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => {
+    const token = req.headers.authorization;
+
+    return {
+      token,
+    };
+  },
 });
 
 const app = express();

@@ -1,5 +1,11 @@
 import db, { Post, User } from './database';
-import { createUserToken } from './authentication';
+import { createUserToken, isTokenValid } from './authentication';
+
+type Context = {
+  token: string;
+  isAuthenticated: boolean;
+  user: User;
+};
 
 function getUsers(): Array<User> {
   const users = Array.from(db.users.values());
@@ -7,9 +13,13 @@ function getUsers(): Array<User> {
   return users;
 }
 
-function getPosts(_: Object, {}): Array<Post> {
+function getPosts(_: Object, {}: Object, { token }: Context): Array<Post> {
   const posts = Array.from(db.posts.values());
 
+  if (!isTokenValid(token)) {
+    return posts.filter(({ published }) => published === true);
+  }
+  
   return posts;
 }
 
