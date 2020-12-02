@@ -7,6 +7,7 @@ export default gql`
     body: String!
     author: User
     published: Boolean! # unpublished posts are only visible to editors and admins
+    views: Int # this field should only be visible to admins
   }
 
   type User {

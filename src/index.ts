@@ -4,16 +4,20 @@ import { ApolloServer } from 'apollo-server-express';
 import typeDefs from './schema';
 import resolvers from './resolvers';
 import { isTokenValid } from './authentication';
+import db from './database';
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
     const token = req.headers.authorization;
+    const { userId } = isTokenValid(token || '') || {};
+    const user = db.users.get(userId);
 
     return {
       token,
-      isAuthenticated: !!isTokenValid(token || ''),
+      isAuthenticated: !!user,
+      user,
     };
   },
 });
