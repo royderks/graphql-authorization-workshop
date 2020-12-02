@@ -1,5 +1,5 @@
-import db, { Post, User, Role } from './database';
-import { createUserToken, isTokenValid } from './authentication';
+import db, { Post, User } from './database';
+import { createUserToken } from './authentication';
 
 type Context = {
   token: string;
@@ -13,10 +13,14 @@ function getUsers(): Array<User> {
   return users;
 }
 
-function getPosts(_: Object): Array<Post> {
+function getPosts(_: Object, {}, { isAuthenticated }: Context): Array<Post> {
   const posts = Array.from(db.posts.values());
 
-  return posts
+  if (!isAuthenticated) {
+    return posts.filter(({ published }) => published === true);
+  }
+
+  return posts;
 }
 
 function getPostsByUser({ id }: User): Array<Post> {
