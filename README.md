@@ -40,7 +40,9 @@ The admin credentials are:
 
 Hint: Where do you get the id of the user from? How can you use this to get the users' information?
 
-5. 
+5. Besides the context or the resolvers, we can also use the schema for our authentication logic with a custom directive. Replace the existing logic for authentication with a custom directive. To save you some time, the code for the directive itself is already present in the file `src/directive.ts`.
+
+Hint: You can find more info here https://www.apollographql.com/docs/apollo-server/schema/directives/#using-custom-schema-directives
 
 
 

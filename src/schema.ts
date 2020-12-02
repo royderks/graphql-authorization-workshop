@@ -1,13 +1,20 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
+  enum Role {
+    ADMIN
+    EDITOR
+  }
+
+  directive @auth(isAuthenticated: Boolean, role: Role) on FIELD_DEFINITION
+
   type Post {
     id: ID!
     title: String!
     body: String!
     author: User
     published: Boolean! # unpublished posts are only visible to editors and admins
-    views: Int # this field should only be visible to admins
+    views: Int @auth(isAuthenticated: true, role: ADMIN) # this field should only be visible to admins
   }
 
   type User {

@@ -1,23 +1,22 @@
 import db, { Post, User, Role } from './database';
 import { createUserToken, isTokenValid } from './authentication';
 
+type Context = {
+  token: string;
+  isAuthenticated: boolean;
+  user: User;
+};
+
 function getUsers(): Array<User> {
   const users = Array.from(db.users.values());
 
   return users;
 }
 
-function getPosts(_: Object, {}, { isAuthenticated, user }): Array<Post> {
+function getPosts(_: Object): Array<Post> {
   const posts = Array.from(db.posts.values());
 
-  if (!isAuthenticated) {
-    return posts.filter(({ published }) => published === true);
-  }
-
-  return posts.map((post) => ({
-    ...post,
-    views: user.role === Role.Admin ? post.views : null,
-  }));
+  return posts
 }
 
 function getPostsByUser({ id }: User): Array<Post> {

@@ -5,6 +5,7 @@ import typeDefs from './schema';
 import resolvers from './resolvers';
 import { isTokenValid } from './authentication';
 import db from './database';
+import { AuthDirective } from './directives';
 
 const server = new ApolloServer({
   typeDefs,
@@ -19,6 +20,9 @@ const server = new ApolloServer({
       isAuthenticated: !!user,
       user,
     };
+  },
+  schemaDirectives: {
+    auth: AuthDirective, // Logic for the directive @auth
   },
 });
 
