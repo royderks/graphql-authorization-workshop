@@ -1,18 +1,18 @@
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
 
-import typeDefs from './schema';
-import resolvers from './resolvers';
-import { isTokenValid } from './authentication';
-import db from './database';
-import { AuthDirective } from './directives';
+const typeDefs = require('./schema');
+const resolvers = require('./resolvers');
+const { isTokenValid } = require('./authentication');
+const db = require('./database');
+const AuthDirective = require('./directives');
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
+  context: async ({ req }) => {
     const token = req.headers.authorization;
-    const { userId } = isTokenValid(token || '') || {};
+    const { userId } = (await isTokenValid(token || '')) || {};
     const user = db.users.get(userId);
 
     return {
