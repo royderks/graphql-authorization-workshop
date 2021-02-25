@@ -1,19 +1,13 @@
-import db, { Post, User } from './database';
-import { createUserToken, isTokenValid } from './authentication';
+const db = require('./database');
+const { createUserToken, isTokenValid } = require('./authentication');
 
-type Context = {
-  token: string;
-  isAuthenticated: boolean;
-  user: User;
-};
-
-function getUsers(): Array<User> {
+function getUsers() {
   const users = Array.from(db.users.values());
 
   return users;
 }
 
-function getPosts(_: Object, {}: Object, { token }: Context): Array<Post> {
+function getPosts(_, {}, { token }) {
   const posts = Array.from(db.posts.values());
 
   if (!isTokenValid(token)) {
@@ -23,17 +17,17 @@ function getPosts(_: Object, {}: Object, { token }: Context): Array<Post> {
   return posts;
 }
 
-function getPostsByUser({ id }: User): Array<Post> {
+function getPostsByUser({ id }) {
   const posts = Array.from(db.posts.values());
 
   return posts.filter(({ authorId }) => authorId === id);
 }
 
-function getAuthorForPost({ authorId }: Post): User | null {
+function getAuthorForPost({ authorId }) {
   return db.users.get(authorId);
 }
 
-function computeName(user: User): string {
+function computeName(user) {
   return `${user.firstName} ${user.lastName}`;
 }
 
@@ -54,4 +48,5 @@ const resolvers = {
   },
 };
 
-export default resolvers;
+module.exports = resolvers;
+

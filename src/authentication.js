@@ -1,38 +1,23 @@
-import JsonWebToken from 'jsonwebtoken';
-import db, { Role } from './database';
-
-type JWT = {
-  userId: number;
-  role: Role;
-};
-
-type LoginInput = {
-  userName: string;
-  password: string;
-};
-
-type Credentials = {
-  token: string;
-  role: Role;
-};
+const JsonWebToken = require('jsonwebtoken');
+const db = require('./database');
 
 // Replace this value with something unique
 const jwtSecret = 'dfsdfer3efdcdcfefe';
 
-export function signToken(userId: number, role: string) {
+function signToken(userId, role) {
   // Sign token containing the userName and role using the secret
   return JsonWebToken.sign({ userId, role }, jwtSecret, {
     expiresIn: 3600,
   });
 }
 
-export function isTokenValid(token: string): JWT | false {
+function isTokenValid(token) {
   const bearerToken = token && token.split(' ');
 
   if (bearerToken) {
     try {
       // The decoded JWT contains the userName, role and expiration timestap
-      const decoded = JsonWebToken.verify(bearerToken[1], jwtSecret) as JWT;
+      const decoded = JsonWebToken.verify(bearerToken[1], jwtSecret);
 
       return decoded;
     } catch (e) {
@@ -43,10 +28,7 @@ export function isTokenValid(token: string): JWT | false {
   return false;
 }
 
-export function createUserToken(
-  _: any,
-  { userName, password }: LoginInput,
-): Credentials | false {
+function createUserToken(_, { userName, password }) {
   for (let [key, { email, id, role }] of db.users.entries()) {
     if (email === userName && password === 'fullstackgraphql') {
       // Create JTW
@@ -59,5 +41,10 @@ export function createUserToken(
     }
   }
 
-  return false
+  return false;
 }
+
+module.exports = {
+  isTokenValid,
+  createUserToken,
+};
