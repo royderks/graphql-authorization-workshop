@@ -40,7 +40,7 @@ Hint: Where do you get the id of the user from? How can you use this to get the 
 
 5. Besides the context or the resolvers, we can also use the schema for our authentication logic with a custom directive. Replace the existing logic to make the field `views` only visible to admin users with a custom directive.
 
-To save you some time, the code for the directive itself is already present in the file `src/directive.ts`. You need to add the validation logic there.
+To save you some time, the code for the directive itself is already present in the file `src/directive.js`. You need to add the validation logic there.
 
 Hint: You can find more info here https://www.apollographql.com/docs/apollo-server/schema/directives/#using-custom-schema-directives
 
