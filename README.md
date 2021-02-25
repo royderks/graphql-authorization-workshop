@@ -44,4 +44,13 @@ To save you some time, the code for the directive itself is already present in t
 
 Hint: You can find more info here https://www.apollographql.com/docs/apollo-server/schema/directives/#using-custom-schema-directives
 
-6. BONUS: Replace the exisiting authentication logic in `authentication.js` with Auth0. For this you can follow the steps in [this article](https://auth0.com/blog/build-and-secure-a-graphql-server-with-node-js/#Securing-a-GraphQL-Server-with-Auth0) I wrote on their blog.
+6. BONUS: Replace the exisiting authentication logic in `authentication.js` with Auth0. For this you can follow the steps in [this article](https://auth0.com/blog/build-and-secure-a-graphql-server-with-node-js/#Securing-a-GraphQL-Server-with-Auth0) I wrote on their blog. The token no longer needs to be created using the `loginUser` mutation, but can be retrieved from the Auth0 Dashboard.
+
+You can use the following `.env` file for your variables:
+
+```
+AUTH0_DOMAIN=YOUR_AUTH0_DOMAIN
+API_IDENTIFIER=YOUR_API_IDENTIFIER
+```
+
+Hint: You need to mock the `userId` as we haven't connected Auth0 with a database!
