@@ -6,6 +6,7 @@ module.exports = gql`
     title: String!
     body: String!
     author: User
+    published: Boolean
   }
 
   type User {
