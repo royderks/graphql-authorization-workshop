@@ -1,21 +1,33 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+const {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} = require('apollo-server-core');
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+async function startApolloServer() {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  });
 
-const app = express();
-server.applyMiddleware({ app });
+  // Wait until server is created and started
+  await server.start();
 
-const PORT = 4000;
+  const app = express();
+  server.applyMiddleware({ app });
 
-app.listen(PORT, () => {
-  console.log(
-    `GraphQL endpoint and playground available at http://localhost:${PORT}${server.graphqlPath}`,
-  );
-});
+
+  const PORT = 4000;
+
+  app.listen(PORT, () => {
+    console.log(
+      `GraphQL endpoint and playground available at http://localhost:${PORT}${server.graphqlPath}`,
+    );
+  });
+}
+
+startApolloServer();
